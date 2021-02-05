@@ -1,6 +1,7 @@
 package com.kauemagid.lists.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,10 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.kauemagid.lists.R;
+import com.kauemagid.lists.RecyclerItemClickListener;
 import com.kauemagid.lists.adapters.Adapter;
 import com.kauemagid.lists.model.Film;
 
@@ -39,7 +42,41 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this , LinearLayout.VERTICAL));
         recyclerView.setAdapter(adapter);
+
+        //Click event
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getApplicationContext(),
+                        recyclerView,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Film film = filmsList.get(position);
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        "Item Pressionado: " + film.getTitle(),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                Film film = filmsList.get(position);
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        "Click longo: " + film.getTitle(),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                })
+        );
 
     }
 
